@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>24 Ways</title>
+
+    <script src="https://aframe.io/releases/0.3.2/aframe.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v2.6.1/dist/aframe-extras.js"></script>
+    <script src="map.js"></script>
+
+</head>
+<body>
+<a-scene fog="type: exponential; color: #2A324C; density: 0.4;">
+<!--<a-scene>-->
+    <a-assets>
+        <img id="texture-floor" src="floor.jpg">
+        <img id="texture-wall" src="wall.jpg">
+    </a-assets>
+
+    <a-entity id="player"
+              camera
+              universal-controls="movementControls: automove, gamepad, keyboard"
+              kinematic-body
+              position="0 0 0">
+        <a-light color="#fff" distance="5" intensity="0.7" type="point"></a-light>
+    </a-entity>
+
+    <a-entity id="walls"></a-entity>
+
+    <a-grid id="ground" static-body material="src: #texture-floor"></a-grid>
+
+    <a-sky id="sky" color="#0000ff"></a-sky>
+
+    <a-light type="ambient" color="#92455E" intensity="0.4"></a-light>
+
+</a-scene>
+
+<script>
+
+    AFRAME.registerComponent('automove-controls', {
+        init: function () {
+            this.speed = 0.1;
+            this.isMoving = true;
+            this.velocityDelta = new THREE.Vector3();
+        },
+        isVelocityActive: function () {
+            return this.isMoving;
+        },
+        getVelocityDelta: function () {
+            this.velocityDelta.z = this.isMoving ? -this.speed : 0;
+            return this.velocityDelta.clone();
+        }
+    });
+
+
+    document.querySelector('a-scene').addEventListener('render-target-loaded', function () {
+        var WALL_SIZE = 5,
+            WALL_HEIGHT = 3;
+        var el = document.querySelector('#walls');
+        var wall;
+
+
+        for (var x = 0; x < map.height; x++)  {
+            for (var y = 0; y < map.width; y++) {
+
+                var i = y*map.width + x;
+                var position = (x-map.width/2)*WALL_SIZE + ' ' + 1.5 + ' ' + (y-map.height/2)*WALL_SIZE;
+                if (map.data[i] === 1) {
+                    // Create wall
+                    wall = document.createElement('a-box');
+                    el.appendChild(wall);
+                    wall.setAttribute('color', '#fff');
+                    wall.setAttribute('material', 'src: #texture-wall;');
+                    wall.setAttribute('width', WALL_SIZE);
+                    wall.setAttribute('height', WALL_HEIGHT);
+                    wall.setAttribute('depth', WALL_SIZE);
+                    wall.setAttribute('position', position);
+                    wall.setAttribute('static-body', '');
+                }
+
+                if (map.data[i] === 2)  {
+                    // Set player position
+                    document.querySelector('#player').setAttribute('position', position);
+                }
+
+            }
+        }
+        console.info('Walls added.');
+    });
+
+</script>
+</body>
+</html>

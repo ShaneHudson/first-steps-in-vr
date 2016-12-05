@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>24 Ways</title>
+
+    <script src="https://aframe.io/releases/0.3.2/aframe.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v2.6.1/dist/aframe-extras.min.js"></script>
+
+</head>
+<body>
+<a-scene>
+
+    <a-entity id="player"
+              camera
+              universal-controls
+              kinematic-body
+              position="0 1.8 0">
+    </a-entity>
+
+    <a-entity id="walls"></a-entity>
+
+    <a-grid id="ground" static-body></a-grid>
+
+    <a-sky id="sky" color="#AADDF0"></a-sky>
+
+    <!-- Lighting -->
+    <a-light type="ambient" color="#ccc"></a-light>
+
+</a-scene>
+
+<script>
+    document.querySelector('a-scene').addEventListener('render-target-loaded', function () {
+        var MAP_SIZE = 10,
+                PLATFORM_SIZE = 5,
+                NUM_PLATFORMS = 50;
+        var platformsEl = document.querySelector('#walls');
+        var v, box;
+        for (var i = 0;  i < NUM_PLATFORMS; i++) {
+            // y: 0 is ground
+            v = {
+                x: (Math.floor(Math.random() * MAP_SIZE) - PLATFORM_SIZE) * PLATFORM_SIZE,
+                y: 0,
+                z: (Math.floor(Math.random() * MAP_SIZE) - PLATFORM_SIZE) * PLATFORM_SIZE
+            };
+            box = document.createElement('a-box');
+            platformsEl.appendChild(box);
+            box.setAttribute('color', '#39BB82');
+            box.setAttribute('width', PLATFORM_SIZE);
+            box.setAttribute('height', PLATFORM_SIZE);
+            box.setAttribute('depth', PLATFORM_SIZE);
+            box.setAttribute('position', v.x + ' ' + v.y + ' ' + v.z);
+            box.setAttribute('static-body', '');
+        }
+        console.info('Platforms loaded.');
+    });
+</script>
+</body>
+</html>
