@@ -1,4 +1,4 @@
-[Article on 24 Ways](https://24ways.org/2016/first-steps-in-vr/)
+[Live Demo](https://shanehudson.net/tools/first-steps-in-vr/02-maze-map/index.html) | [Article on 24 Ways](https://24ways.org/2016/first-steps-in-vr/)
 
 First Steps in VR
 =================
