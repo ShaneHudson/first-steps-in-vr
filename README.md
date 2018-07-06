@@ -12,7 +12,7 @@ The code is kept as simple as possible, so no build scripts or anything. You wil
 
 One way to do this is by using Python’s SimpleHTTPServer, but there are many alternative ways.
 
-```python -m “SimpleHTTPServer”```
+```python -m "SimpleHTTPServer"```
 
  Screenshots
 ------------
